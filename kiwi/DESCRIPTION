@@ -1,0 +1,3 @@
+kiwi is a tool which will watch an arbitrary webcam stream facing a whiteboard
+it gets passed a list of bounding boxes in the whiteboard's coordinate system
+when someone has written something in a bounding box, it transforms, filters, and thresholds that image and dumps it into out_[0-9]*.jpg where [0-9]* is the index in the bounding boxes
