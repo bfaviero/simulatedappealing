@@ -8,7 +8,7 @@ white = (255,255,255)
 black = (0,0,0)
 pink = (255,200,200)
 
-SCALE = 1.5
+SCALE = 2
 SCREEN_SIZE = int(400*SCALE)
 SMALL_SQUARE = int(10*SCALE)
 SMALL_FONT = int(8*SCALE)
