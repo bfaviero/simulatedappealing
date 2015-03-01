@@ -198,8 +198,8 @@ int main (int argc, char** argv) {
 Mat whiteboard_rects(whiteboard);
 imshow("whiteboard", whiteboard_rects);
    int box = -1;
-int loaep = bounding_boxes.size();
-printf("%d\n", loaep);
+//int loaep = bounding_boxes.size();
+//printf("%d\n", loaep);
    for (int i=0; i<bounding_boxes.size(); i++) {
     Mat bounding_box_image = whiteboard(bounding_boxes[i]);
     Mat blurred;
