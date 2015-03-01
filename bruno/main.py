@@ -9,11 +9,11 @@ from placeholder import Placeholder
 placeholders = ['_1', '_2', '_3', '_4', '_5', '_6', '_7, _8, _9']
 placeholders_in_use = []
 
-def next_placeholder(x=None, y=None, big=True):
+def next_placeholder(x=None, y=None, big=True, noexponent=False):
 	if x:
-		placeholder = Placeholder(placeholders.pop(0), x=x, y=y, big=big)
+		placeholder = Placeholder(placeholders.pop(0), x=x, y=y, big=big, noexponent=noexponent)
 	else:
-		placeholder = Placeholder(placeholders.pop(0))
+		placeholder = Placeholder(placeholders.pop(0), noexponent=noexponent)
 	placeholders_in_use.append(placeholder)
 	placeholder.draw_square()
 	return placeholder
@@ -62,18 +62,39 @@ def pp(s):
 
 
 ops = ["+", "/", "*", "=", 'D', '(', ')']
+subscript = ["I"]
 wolfram = Wolfram()
+
 
 def go():
 
 	expr = "%s" % next_placeholder()
-
 	while True:
 		print expr
 		to_replace = raw_input("What variable to replace: ")
 		if (to_replace == ''):
 			expr = expr.replace('D', 'd/dx')
-			wolfram.print_solution(expr)
+			solutions, image = wolfram.get_solutions(expr)
+			y = 100 + drawing.BIG_SQUARE
+			for i, solution in enumerate(solutions):
+				drawing.draw_big_label(solution, 0, y)
+				y += (i+1)*drawing.BIG_SQUARE
+
+			myimage = pygame.image.load(image)
+			imagerect = myimage.get_rect()
+			imagerect = imagerect.move((0, y))
+			size = imagerect.size
+			width = size[0]
+			height = size[1]
+			ideal_height = 150
+			scale = ideal_height / float(height)
+			scale = 1
+			size = (int(width * scale), int(height * scale))
+			myimage = pygame.transform.scale(myimage, size)
+			myimage = drawing.inverted(myimage)
+			drawing.screen.blit(myimage, imagerect)
+			pygame.display.flip()
+
 		else:	
 			print to_replace
 			to_replace = filter(lambda p: p.string == to_replace, placeholders_in_use)[0]
@@ -81,21 +102,35 @@ def go():
 			to_replace.fill_with_text(new_val)
 
 			has_exponent = False
+			if (new_val not in subscript and not to_replace.noexponent):
+				if new_val not in ops:
+					(x, y) = to_replace.get_coords_of_next_exponent_square()
+					if not to_replace.big:
+						for p in placeholders_in_use:
+							if p.x >= x:
+								p.shift_and_redraw()
+					new_val += "**(%s)" % next_placeholder(x, y, False).string
+					has_exponent = True
 
-			if new_val not in ops:
-				(x, y) = to_replace.get_coords_of_next_exponent_square()
-				if not to_replace.big:
-					for p in placeholders_in_use:
-						if p.x >= x:
-							p.shift_and_redraw()
-				new_val += "**(%s)" % next_placeholder(x, y, False).string
-				has_exponent = True
+				(x, y) = to_replace.get_coords_of_next_square(has_exponent)
+				next_main_placeholder = next_placeholder(x, y, to_replace.big)
+				if not to_replace.noexponent:
+					expr = remove_previous_placeholders(expr, to_replace)
+				expr = expr.replace(to_replace.string, new_val + next_main_placeholder.string)
+			elif to_replace.noexponent:
+				(x, y) = to_replace.get_coords_of_next_square(has_exponent)
+				next_main_placeholder = next_placeholder(x, y, to_replace.big)
+				expr = expr.replace(to_replace.string, new_val + next_main_placeholder.string)
+			else:
+				(x1, y1) = to_replace.get_coords_of_next_exponent_square()
+				(x2, y2) = to_replace.get_coords_of_next_subponent_square()
+				new_val += "^(%s)V(%s)V" % (
+					next_placeholder(x1, y1, False).string, 
+					next_placeholder(x2, y2, False, noexponent=True).string)
 
-			(x, y) = to_replace.get_coords_of_next_square(has_exponent)
-			next_main_placeholder = next_placeholder(x, y, to_replace.big)
-			expr = remove_previous_placeholders(expr, to_replace)
-			expr = expr.replace(to_replace.string, new_val + next_main_placeholder.string)
-
+				(x, y) = to_replace.get_coords_of_next_square(has_exponent)
+				next_main_placeholder = next_placeholder(x, y, to_replace.big)
+				expr = expr.replace(to_replace.string, new_val + next_main_placeholder.string)
 			return_placeholder(to_replace)
 
 go()

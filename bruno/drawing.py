@@ -8,15 +8,23 @@ white = (255,255,255)
 black = (0,0,0)
 pink = (255,200,200)
 
-SMALL_SQUARE = 10
-SMALL_FONT = 8
-BIG_SQUARE = 20
-BIG_FONT = 18
+SCALE = 3
+SCREEN_SIZE = 400*SCALE
+SMALL_SQUARE = 10*SCALE
+SMALL_FONT = 8*SCALE
+BIG_SQUARE = 20*SCALE
+BIG_FONT = 18*SCALE
 
 pygame.init()
 small_font = pygame.font.SysFont('Arial', SMALL_FONT)
 big_font = pygame.font.SysFont('Arial', BIG_FONT)
-screen = pygame.display.set_mode((400, 400))
+screen = pygame.display.set_mode((SCREEN_SIZE, SCREEN_SIZE))
+
+def inverted(img):
+  inv = pygame.Surface(img.get_rect().size, pygame.SRCALPHA)
+  inv.fill((255,255,255,255))
+  inv.blit(img, (0,0), None, pygame.BLEND_RGB_SUB)
+  return inv
 
 def draw_small_square(x, y, color=red):
 	draw_square(x, y, size=SMALL_SQUARE, color=color)
@@ -26,7 +34,6 @@ def draw_big_square(x, y, color=red):
 
 def draw_square(x, y, size, color=red, screen=screen):
 	pygame.draw.rect(screen, color, (x, y, size, size), 1)
-	print "done"
 	pygame.display.update()
 
 def draw_label(s, x, y, font, color=red):
