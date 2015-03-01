@@ -95,9 +95,20 @@ def get_solution(expr):
 
 def go():
 
+	pygame.draw.rect(drawing.screen, drawing.blue, (0, 0, 600, 400), 2)
+	pygame.draw.rect(drawing.screen, drawing.blue, (500, 500, 100, 100), 0)
+	pygame.draw.rect(drawing.screen, drawing.blue, (600, 600, 100, 100), 0)
+	pygame.display.update()
+
 	expr = "%s" % next_placeholder()
 	should_i_check_yet = 0
 	while should_i_check_yet < 100:
+
+		events = pygame.event.get()
+		for event in events:
+		    if event.type == pygame.K_q:
+		        return.K_RIGHT:
+
 		should_i_check_yet += 1
 		
 		if should_i_check_yet %3 == 0:

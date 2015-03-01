@@ -22,7 +22,6 @@ class Placeholder:
 			self.fill()
 			self.x += BIG_SQUARE
 			self.draw_square()
-			self.fill_with_text(self.string)
 
 	def fill_with_text(self, s):
 		self.draw_label_fn(s, self.x, self.y)
