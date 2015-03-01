@@ -71,24 +71,27 @@ def get_solution(expr):
 	images = wolfram.get_solutions(expr)
 	y = 100 + drawing.BIG_SQUARE
 	for title, image in images:
-		drawing.draw_small_label(title, 0, y)
-		y += drawing.SMALL_SQUARE
+		try:
+			drawing.draw_small_label(title, 0, y)
+			y += drawing.SMALL_SQUARE
 
-		myimage = pygame.image.load(image)
-		imagerect = myimage.get_rect()
-		imagerect = imagerect.move((0, y))
-		size = imagerect.size
-		width = size[0]
-		height = size[1]
-		ideal_height = 150
-		scale = ideal_height / float(height)
-		scale = 1
-		size = (int(width * scale), int(height * scale))
-		myimage = pygame.transform.scale(myimage, size)
-		myimage = drawing.inverted(myimage)
-		drawing.screen.blit(myimage, imagerect)
-		pygame.display.flip()
-		y += height
+			myimage = pygame.image.load(image)
+			imagerect = myimage.get_rect()
+			imagerect = imagerect.move((0, y))
+			size = imagerect.size
+			width = size[0]
+			height = size[1]
+			ideal_height = 150
+			scale = ideal_height / float(height)
+			scale = 1
+			size = (int(width * scale), int(height * scale))
+			myimage = pygame.transform.scale(myimage, size)
+			myimage = drawing.inverted(myimage)
+			drawing.screen.blit(myimage, imagerect)
+			pygame.display.flip()
+			y += height
+		except:
+			pass
 
 def go():
 
