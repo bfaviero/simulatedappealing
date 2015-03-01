@@ -9,7 +9,6 @@ CNN_API_URL = 'http://ec2-54-146-245-15.compute-1.amazonaws.com:8080/'
 KIWI_DIRECTORY = '.'
 # ends with / !!!
 
-
 def classifyImage(path):
  r = requests.post(CNN_API_URL, files={'image.jpg': open(path, 'rb')})
  return r.text

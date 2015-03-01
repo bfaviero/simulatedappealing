@@ -128,9 +128,6 @@ int main (int argc, char** argv) {
 
  bool keep_going = true;
 
-// function which takes bounding box and webcam frame
-// and returns transformed box in whiteboard space
-
  while (keep_going) {
 
   string filename = "";
@@ -156,8 +153,6 @@ int main (int argc, char** argv) {
      filename = "";
     }
    }
-//   filename = "bounding";
-   // TODO: pick filename which contains _bounding
    printf("opened %s\n", filename.c_str());
   }
 
@@ -232,6 +227,11 @@ states[i] = 1;
 }
 if (states[i] == 1 && mean(grayscale_flow)[0] < 10.0) {
 states[i] = 2;
+}
+if (states[i] > 1) {
+states[i] += 1;
+}
+if (states[i] > 8) {
 box = i;
 }
    }
