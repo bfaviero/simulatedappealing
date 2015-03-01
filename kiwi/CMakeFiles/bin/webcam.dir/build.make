@@ -26,19 +26,22 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/bin/cmake
+CMAKE_COMMAND = /opt/local/bin/cmake
 
 # The command to remove a file.
-RM = /usr/bin/cmake -E remove -f
+RM = /opt/local/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
+# The program to use to edit the cache.
+CMAKE_EDIT_COMMAND = /opt/local/bin/ccmake
+
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/shariq/simulatedappealing/kiwi
+CMAKE_SOURCE_DIR = /Users/bencoh/Desktop/simulatedappealing/kiwi
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/shariq/simulatedappealing/kiwi
+CMAKE_BINARY_DIR = /Users/bencoh/Desktop/simulatedappealing/kiwi
 
 # Include any dependencies generated for this target.
 include CMakeFiles/./bin/webcam.dir/depend.make
@@ -51,17 +54,17 @@ include CMakeFiles/./bin/webcam.dir/flags.make
 
 CMakeFiles/./bin/webcam.dir/webcam.cpp.o: CMakeFiles/./bin/webcam.dir/flags.make
 CMakeFiles/./bin/webcam.dir/webcam.cpp.o: webcam.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/shariq/simulatedappealing/kiwi/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /Users/bencoh/Desktop/simulatedappealing/kiwi/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/./bin/webcam.dir/webcam.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/./bin/webcam.dir/webcam.cpp.o -c /home/shariq/simulatedappealing/kiwi/webcam.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/./bin/webcam.dir/webcam.cpp.o -c /Users/bencoh/Desktop/simulatedappealing/kiwi/webcam.cpp
 
 CMakeFiles/./bin/webcam.dir/webcam.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/./bin/webcam.dir/webcam.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/shariq/simulatedappealing/kiwi/webcam.cpp > CMakeFiles/./bin/webcam.dir/webcam.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /Users/bencoh/Desktop/simulatedappealing/kiwi/webcam.cpp > CMakeFiles/./bin/webcam.dir/webcam.cpp.i
 
 CMakeFiles/./bin/webcam.dir/webcam.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/./bin/webcam.dir/webcam.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/shariq/simulatedappealing/kiwi/webcam.cpp -o CMakeFiles/./bin/webcam.dir/webcam.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /Users/bencoh/Desktop/simulatedappealing/kiwi/webcam.cpp -o CMakeFiles/./bin/webcam.dir/webcam.cpp.s
 
 CMakeFiles/./bin/webcam.dir/webcam.cpp.o.requires:
 .PHONY : CMakeFiles/./bin/webcam.dir/webcam.cpp.o.requires
@@ -81,45 +84,37 @@ _/bin/webcam_EXTERNAL_OBJECTS =
 
 ./bin/webcam: CMakeFiles/./bin/webcam.dir/webcam.cpp.o
 ./bin/webcam: CMakeFiles/./bin/webcam.dir/build.make
-./bin/webcam: /usr/local/lib/libopencv_videostab.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_video.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_ts.a
-./bin/webcam: /usr/local/lib/libopencv_superres.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_stitching.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_photo.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_ocl.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_objdetect.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_nonfree.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_ml.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_legacy.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_imgproc.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_highgui.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_gpu.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_flann.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_features2d.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_core.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_contrib.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_calib3d.so.2.4.10
-./bin/webcam: /usr/lib/x86_64-linux-gnu/libGLU.so
-./bin/webcam: /usr/lib/x86_64-linux-gnu/libGL.so
-./bin/webcam: /usr/lib/x86_64-linux-gnu/libSM.so
-./bin/webcam: /usr/lib/x86_64-linux-gnu/libICE.so
-./bin/webcam: /usr/lib/x86_64-linux-gnu/libX11.so
-./bin/webcam: /usr/lib/x86_64-linux-gnu/libXext.so
-./bin/webcam: /usr/local/lib/libopencv_nonfree.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_ocl.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_gpu.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_photo.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_objdetect.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_legacy.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_video.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_ml.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_calib3d.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_features2d.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_highgui.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_imgproc.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_flann.so.2.4.10
-./bin/webcam: /usr/local/lib/libopencv_core.so.2.4.10
+./bin/webcam: /opt/local/lib/libopencv_videostab.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_video.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_ts.a
+./bin/webcam: /opt/local/lib/libopencv_superres.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_stitching.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_photo.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_objdetect.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_nonfree.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_ml.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_legacy.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_imgproc.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_highgui.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_gpu.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_flann.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_features2d.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_core.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_contrib.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_calib3d.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_nonfree.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_gpu.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_photo.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_objdetect.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_legacy.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_video.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_ml.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_calib3d.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_features2d.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_highgui.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_imgproc.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_flann.2.4.10.dylib
+./bin/webcam: /opt/local/lib/libopencv_core.2.4.10.dylib
 ./bin/webcam: CMakeFiles/./bin/webcam.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable ./bin/webcam"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/./bin/webcam.dir/link.txt --verbose=$(VERBOSE)
@@ -136,6 +131,6 @@ CMakeFiles/./bin/webcam.dir/clean:
 .PHONY : CMakeFiles/./bin/webcam.dir/clean
 
 CMakeFiles/./bin/webcam.dir/depend:
-	cd /home/shariq/simulatedappealing/kiwi && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/shariq/simulatedappealing/kiwi /home/shariq/simulatedappealing/kiwi /home/shariq/simulatedappealing/kiwi /home/shariq/simulatedappealing/kiwi /home/shariq/simulatedappealing/kiwi/CMakeFiles/bin/webcam.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/bencoh/Desktop/simulatedappealing/kiwi && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/bencoh/Desktop/simulatedappealing/kiwi /Users/bencoh/Desktop/simulatedappealing/kiwi /Users/bencoh/Desktop/simulatedappealing/kiwi /Users/bencoh/Desktop/simulatedappealing/kiwi /Users/bencoh/Desktop/simulatedappealing/kiwi/CMakeFiles/bin/webcam.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/./bin/webcam.dir/depend
 
