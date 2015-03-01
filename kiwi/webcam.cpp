@@ -34,10 +34,10 @@ void createMaps() {
  Point2f source_points[4];
  Point2f dest_points[4];
  // TODO: calculate from threshold and hough transform
- source_points[0] = Point2f(208,75);
- source_points[1] = Point2f(1074,93);
- source_points[2] = Point2f(123,662);
- source_points[3] = Point2f(1143,674);
+ source_points[0] = Point2f(456-225,236-124);
+ source_points[1] = Point2f(1268-225,207-124);
+ source_points[2] = Point2f(481-225,764-124);
+ source_points[3] = Point2f(1230-225,763-124);
 
  dest_points[0] = Point2f(0,0);
  dest_points[1] = Point2f(1200,0);

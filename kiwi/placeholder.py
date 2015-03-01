@@ -1,18 +1,18 @@
 from drawing import *
 
 class Placeholder:
-	def __init__(self, string, x=0, y=100, big=True, noexponent=False):
+	def __init__(self, string, x=BIG_SQUARE, y=60*SCALE, big=True, noexponent=False):
 		self.big = big
 		self.size = BIG_SQUARE if big else SMALL_SQUARE
 		self.draw_label_fn = draw_big_label if big else draw_small_label
 		self.draw_square_fn = draw_big_square if self.big else draw_small_square
 		self.string = string
-		self.x = x
+		self.x = x - self.size / 2
 		self.y = y
 		self.noexponent = noexponent
 
-	def draw_square(self):
-		self.draw_square_fn(self.x, self.y, color=red)
+	def draw_square(self, color=white):
+		self.draw_square_fn(self.x, self.y, color=color)
 
 	def fill(self):
 		self.draw_square_fn(self.x, self.y, color=black, width=0)
@@ -23,7 +23,12 @@ class Placeholder:
 			self.x += BIG_SQUARE
 			self.draw_square()
 
-	def fill_with_text(self, s):
+	def fill_with_text(self, s, nosquare=False):
+		self.fill()
+		if nosquare:
+			self.draw_square(black)
+		else:
+			self.draw_square()
 		self.draw_label_fn(s, self.x, self.y)
 
 	def get_coords_of_next_exponent_square(self):

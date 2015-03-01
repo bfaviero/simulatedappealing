@@ -12,6 +12,18 @@ placeholders = ['_' + str(i) for i in range(0, 10)]
 print placeholders
 placeholders_in_use = []
 
+MODE_BEST = 0
+MODE_TOP = 1
+MODE_CL = 2
+mode = MODE_BEST
+
+INPUT_RECT = (drawing.SMALL_SQUARE, 60*drawing.SCALE + drawing.BIG_SQUARE, drawing.BIG_SQUARE, drawing.BIG_SQUARE)
+INPUT_BOUNDING_BOX = (drawing.SMALL_SQUARE, 60*drawing.SCALE + drawing.BIG_SQUARE, drawing.SMALL_SQUARE + drawing.BIG_SQUARE, 60*drawing.SCALE + drawing.BIG_SQUARE + drawing.BIG_SQUARE)
+input_placeholder = Placeholder('xxx', INPUT_RECT[0], INPUT_RECT[1])
+
+def init():
+	input_placeholder.draw_square()
+
 def next_placeholder(x=None, y=None, big=True, noexponent=False):
 	if x:
 		placeholder = Placeholder(placeholders.pop(0), x=x, y=y, big=big, noexponent=noexponent)
@@ -19,6 +31,8 @@ def next_placeholder(x=None, y=None, big=True, noexponent=False):
 		placeholder = Placeholder(placeholders.pop(0), noexponent=noexponent)
 	placeholders_in_use.append(placeholder)
 	placeholder.draw_square()
+	if mode == MODE_CL:
+		placeholder.fill_with_text(str(placeholders_in_use.index(placeholder)))
 	return placeholder
 
 def return_all_placeholders():
@@ -75,8 +89,10 @@ subscript = ["I", "S"]
 wolfram = Wolfram()
 
 def get_solution(expr):
+	y = 60*drawing.SCALE + drawing.BIG_SQUARE * 2
+	drawing.draw_small_label("Finding solution...", 0, y)
 	images = wolfram.get_solutions(expr)
-	y = 100 + drawing.BIG_SQUARE
+	pygame.draw.rect(drawing.screen, drawing.black, (0, y, 1000, 1000), 0)
 	for title, image in images:
 		try:
 			drawing.draw_small_label(title, 0, y)
@@ -88,11 +104,13 @@ def get_solution(expr):
 			size = imagerect.size
 			width = size[0]
 			height = size[1]
+			"""
 			ideal_height = 150
 			scale = ideal_height / float(height)
 			scale = 1
 			size = (int(width * scale), int(height * scale))
 			myimage = pygame.transform.scale(myimage, size)
+			"""
 			myimage = drawing.inverted(myimage)
 			drawing.screen.blit(myimage, imagerect)
 			pygame.display.flip()
@@ -100,15 +118,21 @@ def get_solution(expr):
 		except:
 			pass
 
-def go():
+def reset(expr):
+	pygame.draw.rect(drawing.screen, drawing.black, (0, 0, 1000, 1000), 0)
+	pygame.display.update()
+	return_all_placeholders()
+	expr = "%s" % next_placeholder()
+	init()
+	return expr
 
+def go():
+	init()
 	pygame.draw.rect(drawing.screen, drawing.blue, (0, 0, 400*drawing.SCALE, 267*drawing.SCALE), 2)
-	pygame.draw.rect(drawing.screen, drawing.blue, (250, 250, 50, 50), 0)
-	pygame.draw.rect(drawing.screen, drawing.blue, (300, 300, 50, 50), 0)
 	pygame.display.update()
 
 	expr = "%s" % next_placeholder()
-	should_i_check_yet = 0
+
 	while True:
 
 		events = pygame.event.get()
@@ -116,25 +140,31 @@ def go():
 		    if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
 		    	return
 		    if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
-		    	pygame.draw.rect(drawing.screen, drawing.black, (0, 0, 1000, 1000), 0)
-		    	pygame.display.update()
-		    	return_all_placeholders()
-		    	expr = "%s" % next_placeholder()
+		    	expr = reset(expr)
 		    	break
 
-		should_i_check_yet += 1
-		
-		if should_i_check_yet %3 == 0:
-			get_solution(expr)
 
 		bounding_boxes = [placeholder.get_kiwi_coords() for placeholder in placeholders_in_use]
 
-		box_index , new_val = kiwi.newBox(bounding_boxes)
-		#box_index = int(raw_input('index'))
-		#new_val = raw_input('val ')
+		if mode == MODE_BEST:
+			box_index , new_val = kiwi.newBox(bounding_boxes + [INPUT_BOUNDING_BOX])
+		elif mode == MODE_CL:
+			box_index = int(raw_input('index: '))
+			new_val = raw_input('val: ')
+
+		if box_index == -1 or box_index == len(bounding_boxes):
+			try:
+				get_solution(expr)
+			except:
+				pass
+			continue
+		if box_index == -2:
+			expr = reset(expr)
+			continue
+
 		to_replace = placeholders_in_use[box_index]
 		to_replace.fill()
-		to_replace.fill_with_text(new_val)
+		to_replace.fill_with_text(new_val, nosquare=True)
 
 		has_exponent = False
 		if (new_val not in subscript and not to_replace.noexponent):
@@ -167,6 +197,9 @@ def go():
 			next_main_placeholder = next_placeholder(x, y, to_replace.big)
 			expr = expr.replace(to_replace.string, new_val + next_main_placeholder.string)
 		return_placeholder(to_replace)
+		if mode == MODE_CL:
+			for placeholder in placeholders_in_use:
+				placeholder.fill_with_text(str(placeholders_in_use.index(placeholder)))
 
 go()
 

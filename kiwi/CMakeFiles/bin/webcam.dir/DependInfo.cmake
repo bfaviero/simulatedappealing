@@ -4,9 +4,9 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
-  "/home/shariq/simulatedappealing/kiwi/webcam.cpp" "/home/shariq/simulatedappealing/kiwi/CMakeFiles/bin/webcam.dir/webcam.cpp.o"
+  "/Users/bencoh/Desktop/simulatedappealing/kiwi/webcam.cpp" "/Users/bencoh/Desktop/simulatedappealing/kiwi/CMakeFiles/bin/webcam.dir/webcam.cpp.o"
   )
-SET(CMAKE_CXX_COMPILER_ID "GNU")
+SET(CMAKE_CXX_COMPILER_ID "Clang")
 
 # Targets to which this target links.
 SET(CMAKE_TARGET_LINKED_INFO_FILES
@@ -14,8 +14,8 @@ SET(CMAKE_TARGET_LINKED_INFO_FILES
 
 # The include file search paths:
 SET(CMAKE_C_TARGET_INCLUDE_PATH
-  "/usr/local/include/opencv"
-  "/usr/local/include"
+  "/opt/local/include/opencv"
+  "/opt/local/include"
   )
 SET(CMAKE_CXX_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
 SET(CMAKE_Fortran_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
