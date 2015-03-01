@@ -15,8 +15,8 @@ def classifyImage(path):
  r = requests.post(CNN_API_URL, files={'image.jpg': open(path, 'rb')})
  return r.text
 
-def newBox(bounding = [(0,0,100,100)]):
- open(KIWI_DIRECTORY+'thingy_bounding', 'w').write('\n'.join([' '.join(x) for x in bounding]))
+def newBox(bounding = [(0,0,100,100),(100,0,200,100),(200,0,300,100)]):
+ open(KIWI_DIRECTORY+'thingy_bounding', 'w').write('\n'.join([' '.join(map(str,x)) for x in bounding]))
  while True:
   time.sleep(0.1)
   for fn in os.listdir(KIWI_DIRECTORY):

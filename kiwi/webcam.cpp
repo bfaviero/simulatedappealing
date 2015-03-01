@@ -158,6 +158,7 @@ int main (int argc, char** argv) {
    }
 //   filename = "bounding";
    // TODO: pick filename which contains _bounding
+   printf("opened %s\n", filename.c_str());
   }
 
   // open and parse filename
@@ -257,6 +258,7 @@ printf("\n");
     imwrite(identifier+"_"+buf_s+"_bounding.jpg", processed);
     imshow("HANDWRITING",processed);
     detecting = false;
+    return 0;
    }
    waitKey(1);
   }
