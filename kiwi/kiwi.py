@@ -9,16 +9,18 @@ CNN_API_URL = 'http://ec2-54-146-245-15.compute-1.amazonaws.com:8080/'
 KIWI_DIRECTORY = '.'
 # ends with / !!!
 
-os.system(KIWI_DIRECTORY+'/bin/webcam &')
 
 def classifyImage(path):
  r = requests.post(CNN_API_URL, files={'image.jpg': open(path, 'rb')})
  return r.text
 
 def newBox(bounding = [(0,0,100,100),(100,0,200,100),(200,0,300,100)]):
- open(KIWI_DIRECTORY+'thingy_bounding', 'w').write('\n'.join([' '.join(map(str,x)) for x in bounding]))
+ open(KIWI_DIRECTORY+'/thingy_bounding', 'w').write('\n'.join([' '.join(map(str,x)) for x in bounding]))
+ os.system(KIWI_DIRECTORY+'/bin/webcam &')
  while True:
   time.sleep(0.1)
   for fn in os.listdir(KIWI_DIRECTORY):
    if 'thingy' in fn and 'bounding.jpg' in fn:
+    os.system('rm '+KIWI_DIRECTORY+'/thingy_bounding')
+    os.system('rm '+KIWI_DIRECTORY+'/'+fn)
     return (int(fn.replace('_bounding.jpg','').split('_')[-1]),classifyImage(KIWI_DIRECTORY + '/' + fn))
