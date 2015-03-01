@@ -153,7 +153,11 @@ def go():
 			new_val = raw_input('val: ')
 
 		if box_index == -1 or box_index == len(bounding_boxes):
-			get_solution(expr)
+			try:
+				get_solution(expr)
+			except:
+				pass
+			continue
 		if box_index == -2:
 			expr = reset(expr)
 			continue
