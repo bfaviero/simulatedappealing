@@ -18,17 +18,6 @@ Mat ellipticKernel(int width, int height = -1) {
  }
 }
 
-/*
-Point whiteboardim_to_webcamim(Point whiteboardim) {
-// TODO: calibrate and implement
- return whiteboardim;
-}
-
-Point webcamim_to_whiteboardim(Point webcamim) {
-// TODO: calibrate and implement
- return webcamim;
-}
-*/
 void createMaps() {
  image_wb_map_x.create(Size(1200,800), CV_32FC1);
  image_wb_map_y.create(Size(1200,800), CV_32FC1);
@@ -170,15 +159,42 @@ int main (int argc, char** argv) {
    Rect box(x1,y1,x2-x1,y2-y1);
    bounding_boxes.push_back(box);
   }
+  Mat initial_frame(cvQueryFrame(capture));
+  Mat initial_whiteboard = webcamToWhiteboard(initial_frame);
+  vector<Mat> bounding_box_buffers;
+  for (int i = 0; i < bounding_boxes.size(); i++) {
+   Mat bounding_box_buffer = initial_whiteboard(bounding_boxes[i]);
+   Mat other;
+   GaussianBlur(bounding_box_buffer, other, Size(5,5), 0, 0);
+   bounding_box_buffers.push_back(other);
+  }
 
   bool detecting = true;
+  vector<int> states;
+  for (int j=0; j<bounding_boxes.size(); j++) {
+   states.push_back(0);
+  }
   while (detecting) {
    Mat image(cvQueryFrame(capture));
    Mat whiteboard = webcamToWhiteboard(image);
 
    rectangle(whiteboard, bounding_boxes[0], Scalar(0,0,0));
+   rectangle(whiteboard, bounding_boxes[1], Scalar(0,0,0));
+   rectangle(whiteboard, bounding_boxes[2], Scalar(0,0,0));
 
    imshow("webcam", whiteboard);
+
+   vector<Mat> flow_images;
+   for (int i=0; i<bounding_boxes.size(); i++) {
+    Mat bounding_box_image = whiteboard(bounding_boxes[i]);
+    Mat blurred;
+    GaussianBlur(bounding_box_image, blurred, Size(5,5), 0, 0);
+    flow_images.push_back(abs(bounding_box_image - bounding_box_buffers[i]));
+    bounding_box_buffers[i] = bounding_box_buffers[i]*0.5 + blurred*0.5;
+   }
+imshow("flow1", flow_images[0]);
+imshow("flow2", flow_images[1]);
+imshow("flow3", flow_images[2]);
 
    // TODO: write code to figure out when a box has been filled in
    // try to see if the person finished writing something in each bounding box

@@ -13,6 +13,8 @@ webcam.hpp
 /home/shariq/simulatedappealing/kiwi/webcam.hpp
 opencv2/opencv.hpp
 -
+opencv2/highgui/highgui.hpp
+-
 opencv2/imgproc/imgproc.hpp
 -
 opencv2/objdetect/objdetect.hpp
