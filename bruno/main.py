@@ -6,7 +6,8 @@ from wolfram import Wolfram
 import drawing
 from placeholder import Placeholder
 
-placeholders = ['_1', '_2', '_3', '_4', '_5', '_6', '_7, _8, _9']
+placeholders = ['_' + str(i) for i in range(0, 10)]
+print placeholders
 placeholders_in_use = []
 
 def next_placeholder(x=None, y=None, big=True, noexponent=False):
@@ -15,6 +16,7 @@ def next_placeholder(x=None, y=None, big=True, noexponent=False):
 	else:
 		placeholder = Placeholder(placeholders.pop(0), noexponent=noexponent)
 	placeholders_in_use.append(placeholder)
+	placeholder.fill_with_text(placeholder.string)
 	placeholder.draw_square()
 	return placeholder
 
@@ -61,8 +63,8 @@ def pp(s):
 	print ""
 
 
-ops = ["+", "/", "*", "=", 'D', '(', ')']
-subscript = ["I"]
+ops = ["+", "/", "*", "=", 'D', '(']
+subscript = ["I", "S"]
 wolfram = Wolfram()
 
 
@@ -73,32 +75,33 @@ def go():
 		print expr
 		to_replace = raw_input("What variable to replace: ")
 		if (to_replace == ''):
-			expr = expr.replace('D', 'd/dx')
-			solutions, image = wolfram.get_solutions(expr)
+			images = wolfram.get_solutions(expr)
 			y = 100 + drawing.BIG_SQUARE
-			for i, solution in enumerate(solutions):
-				drawing.draw_big_label(solution, 0, y)
-				y += (i+1)*drawing.BIG_SQUARE
+			for title, image in images:
+				drawing.draw_small_label(title, 0, y)
+				y += drawing.SMALL_SQUARE
 
-			myimage = pygame.image.load(image)
-			imagerect = myimage.get_rect()
-			imagerect = imagerect.move((0, y))
-			size = imagerect.size
-			width = size[0]
-			height = size[1]
-			ideal_height = 150
-			scale = ideal_height / float(height)
-			scale = 1
-			size = (int(width * scale), int(height * scale))
-			myimage = pygame.transform.scale(myimage, size)
-			myimage = drawing.inverted(myimage)
-			drawing.screen.blit(myimage, imagerect)
-			pygame.display.flip()
+				myimage = pygame.image.load(image)
+				imagerect = myimage.get_rect()
+				imagerect = imagerect.move((0, y))
+				size = imagerect.size
+				width = size[0]
+				height = size[1]
+				ideal_height = 150
+				scale = ideal_height / float(height)
+				scale = 1
+				size = (int(width * scale), int(height * scale))
+				myimage = pygame.transform.scale(myimage, size)
+				myimage = drawing.inverted(myimage)
+				drawing.screen.blit(myimage, imagerect)
+				pygame.display.flip()
+				y += height
 
 		else:	
 			print to_replace
 			to_replace = filter(lambda p: p.string == to_replace, placeholders_in_use)[0]
 			new_val = raw_input("new value: ")
+			to_replace.fill()
 			to_replace.fill_with_text(new_val)
 
 			has_exponent = False
@@ -119,7 +122,7 @@ def go():
 				expr = expr.replace(to_replace.string, new_val + next_main_placeholder.string)
 			elif to_replace.noexponent:
 				(x, y) = to_replace.get_coords_of_next_square(has_exponent)
-				next_main_placeholder = next_placeholder(x, y, to_replace.big)
+				next_main_placeholder = next_placeholder(x, y, to_replace.big, noexponent=True)
 				expr = expr.replace(to_replace.string, new_val + next_main_placeholder.string)
 			else:
 				(x1, y1) = to_replace.get_coords_of_next_exponent_square()

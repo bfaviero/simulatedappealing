@@ -15,13 +15,14 @@ class Placeholder:
 		self.draw_square_fn(self.x, self.y, color=red)
 
 	def fill(self):
-		self.draw_square_fn(self.x, self.y, color=black)
+		self.draw_square_fn(self.x, self.y, color=black, width=0)
 
 	def shift_and_redraw(self):
 		if not self.noexponent:
 			self.fill()
 			self.x += BIG_SQUARE
 			self.draw_square()
+			self.fill_with_text(self.string)
 
 	def fill_with_text(self, s):
 		self.draw_label_fn(s, self.x, self.y)

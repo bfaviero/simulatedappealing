@@ -14,10 +14,15 @@ class Wolfram():
 	def get_solutions(self, expr):
 		solutions = []
 		image = None
+		expr = expr.replace('D', 'd/dx')
 		expr = re.sub(r"\*\*\(_\d+\)", "", expr)
 		expr = re.sub(r"_\d+", "", expr)
-
-		expr = re.sub(r'(I\^)\((.*)\)(V)\((.*)\)(V)', r'integral from \4 to \2 of ', expr)
+		if "I" in expr:
+			expr = re.sub(r'(I\^)\((.*)\)(V)\((.*)\)(V)', r'integral from \4 to \2 of ', expr)
+		if "S" in expr:
+			expr = re.sub(r'(S\^)\((.*)\)(V)\((.*)\)(V)', r'summation from \4 to \2 of ', expr)
+		if "integral from  to  " in expr:
+			expr = expr.replace("from  to  ", "")
 
 		print "Searching for solution for equation:"
 		print "\t %s" % expr
@@ -34,6 +39,7 @@ class Wolfram():
 
 
 		solution_found = False
+		"""
 		for title in possible_titles:
 			solution = filter(lambda x: x.title == title, res.pods)
 			print title
@@ -53,18 +59,25 @@ class Wolfram():
 					solution_found = True
 					solutions.append("%s: %s" % (solution.title, solution.text))
 
-
+		"""
+		images = []
 		for pod in res.pods:
-			if pod.title not in  ["Plot", "Plots"]:
-				continue
-
-			child = pod.main.node.getchildren()[1]
-			src = child.get('src')
-			width = int(child.get('width'))
-			height = int(child.get('height'))
-			f = StringIO.StringIO()
-			imgRequest = urllib2.Request(src)
-			image = urllib2.urlopen(imgRequest).read()
-			f.write(image)
-			break
-		return solutions, f
+			try:
+				if pod.title in [
+					"Number line",
+					"Geometric figure",
+					"Properties as a real function"
+					]:
+					continue
+				child = pod.main.node.getchildren()[1]
+				src = child.get('src')
+				width = int(child.get('width'))
+				height = int(child.get('height'))
+				f = StringIO.StringIO()
+				imgRequest = urllib2.Request(src)
+				image = urllib2.urlopen(imgRequest).read()
+				f.write(image)
+				images.append((pod.title, f))
+			except:
+				pass
+		return images
