@@ -22,7 +22,8 @@ INPUT_BOUNDING_BOX = (drawing.SMALL_SQUARE, 60*drawing.SCALE + drawing.BIG_SQUAR
 input_placeholder = Placeholder('xxx', INPUT_RECT[0], INPUT_RECT[1])
 
 def init():
-	input_placeholder.draw_square()
+	return
+	#input_placeholder.draw_square()
 
 def next_placeholder(placeholders_in_use, x=None, y=None, big=True, noexponent=False):
 	if x:
