@@ -15,7 +15,7 @@ placeholders_in_use = []
 MODE_BEST = 0
 MODE_TOP = 1
 MODE_CL = 2
-mode = MODE_CL
+mode = MODE_BEST
 
 INPUT_RECT = (drawing.SMALL_SQUARE, 60*drawing.SCALE + drawing.BIG_SQUARE, drawing.BIG_SQUARE, drawing.BIG_SQUARE)
 input_placeholder = Placeholder('xxx', INPUT_RECT[0], INPUT_RECT[1])
