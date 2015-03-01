@@ -7,8 +7,8 @@ class Placeholder:
 		self.draw_label_fn = draw_big_label if big else draw_small_label
 		self.draw_square_fn = draw_big_square if self.big else draw_small_square
 		self.string = string
-		self.x = x
-		self.y = y
+		self.x = x + 50
+		self.y = y + 50
 		self.noexponent = noexponent
 
 	def draw_square(self, color=white):
