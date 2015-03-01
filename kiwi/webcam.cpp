@@ -183,38 +183,61 @@ int main (int argc, char** argv) {
    rectangle(whiteboard, bounding_boxes[2], Scalar(0,0,0));
 
    imshow("webcam", whiteboard);
+   int box = -1;
 
-   vector<Mat> flow_images;
    for (int i=0; i<bounding_boxes.size(); i++) {
     Mat bounding_box_image = whiteboard(bounding_boxes[i]);
     Mat blurred;
     GaussianBlur(bounding_box_image, blurred, Size(5,5), 0, 0);
-    flow_images.push_back(abs(bounding_box_image - bounding_box_buffers[i]));
-    bounding_box_buffers[i] = bounding_box_buffers[i]*0.5 + blurred*0.5;
+    Mat flow_image = abs(bounding_box_image - bounding_box_buffers[i]);
+    Mat grayscale_flow;
+    cvtColor(flow_image, grayscale_flow, CV_BGR2GRAY);
+    threshold(grayscale_flow, grayscale_flow, 20, 0, 3);
+    printf("%d:%f ", i, mean(grayscale_flow)[0]);
+    if (mean(grayscale_flow)[0]<5.0) {
+     bounding_box_buffers[i] = bounding_box_buffers[i]*0.5 + blurred*0.5;
+    }
+if (i==0)
+imshow("flow1", grayscale_flow);
+if (i==1)
+imshow("flow2", grayscale_flow);
+if (i==2)
+imshow("flow3", grayscale_flow);
+if (states[i] == 0 && mean(grayscale_flow)[0]>35.0) {
+states[i] = 1;
+}
+if (states[i] == 1 && mean(grayscale_flow)[0] < 10.0) {
+states[i] = 2;
+box = i;
+}
    }
-imshow("flow1", flow_images[0]);
-imshow("flow2", flow_images[1]);
-imshow("flow3", flow_images[2]);
+printf("\n");
 
    // TODO: write code to figure out when a box has been filled in
    // try to see if the person finished writing something in each bounding box
    // ideas:
    // - white border means no hand
    // - movement means something is being written to there
-   // - movement then no movement means something was written
+   // - movement then no movement means something was written, iff no hand in frame
    // - morphological operation and weight of marker can tell if hand is in image
    // box == -1 -> nothing detected; else box==id -> id detected
 
-   int box = -1;
    if (box != -1) {
     Mat handwriting = extractBoundingBox(whiteboard, bounding_boxes.at(box));
-
+    Mat processed;
+    cvtColor(handwriting, processed, CV_BGR2GRAY);
+    threshold(processed, processed, tracker1, 255, THRESH_TOZERO);
     // TODO: preprocess the handwriting image before passing it to CNN
     // filter that Mat and morpho to get only strokes
     // resize it to reduce white
     // dump the grayscale into a jpeg with box in name
 
     // TODO: dump image to file
+    char buf[100];
+    sprintf(buf, "%d", box);
+    string buf_s = string(buf);
+    imwrite("output_"+buf_s+".jpg", processed);
+    imshow("HANDWRITING",processed);
     detecting = false;
    }
    waitKey(1);
