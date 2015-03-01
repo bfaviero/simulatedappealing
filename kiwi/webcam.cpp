@@ -177,10 +177,6 @@ int main (int argc, char** argv) {
   }
   Mat initial_frame(cvQueryFrame(capture));
   Mat initial_whiteboard = webcamToWhiteboard(initial_frame);
-  Mat yocomo(initial_whiteboard);
-  rectangle(yocomo, bounding_boxes[0], Scalar(0,0,0));
-  rectangle(yocomo, bounding_boxes[1], Scalar(0,0,0));
-  rectangle(yocomo, bounding_boxes[2], Scalar(0,0,0));
   vector<Mat> bounding_box_buffers;
   vector<Mat> initial_buffers;
   for (int i = 0; i < bounding_boxes.size(); i++) {
@@ -199,10 +195,11 @@ int main (int argc, char** argv) {
   while (detecting) {
    Mat image(cvQueryFrame(capture));
    Mat whiteboard = webcamToWhiteboard(image);
-
-   imshow("webcam", yocomo);
+Mat whiteboard_rects(whiteboard);
+imshow("whiteboard", whiteboard_rects);
    int box = -1;
-
+int loaep = bounding_boxes.size();
+printf("%d\n", loaep);
    for (int i=0; i<bounding_boxes.size(); i++) {
     Mat bounding_box_image = whiteboard(bounding_boxes[i]);
     Mat blurred;
@@ -211,26 +208,10 @@ int main (int argc, char** argv) {
     Mat grayscale_flow;
     cvtColor(flow_image, grayscale_flow, CV_BGR2GRAY);
     threshold(grayscale_flow, grayscale_flow, 20, 0, 3);
-    printf("%d:%f ", i, mean(grayscale_flow)[0]);
-    if (mean(grayscale_flow)[0]<5.0) {
+    if (mean(grayscale_flow)[0]<10.0) {
      bounding_box_buffers[i] = bounding_box_buffers[i]*0.5 + blurred*0.5;
     }
-Mat display_demo;
-cvtColor(whiteboard(bounding_boxes[0]), display_demo, CV_BGR2GRAY);
-threshold(display_demo, display_demo, 70, 255, 3);
-// threshold_2 OCR PREPROCESS
-threshold(display_demo, display_demo, 140, 255, 0);
-// threshold_1 OCR PREPROCESS
-morphologyEx(display_demo, display_demo, MORPH_OPEN, ellipticKernel(6));
-// dilate size OCR PREPROCESS
-imshow("example", display_demo);
-if (i==0)
-imshow("flow1", grayscale_flow);
-if (i==1)
-imshow("flow2", grayscale_flow);
-if (i==2)
-imshow("flow3", grayscale_flow);
-if (states[i] == 0 && mean(grayscale_flow)[0]>25.0) {
+if (states[i] == 0 && mean(grayscale_flow)[0]>15.0) {
 states[i] = 1;
 }
 if (states[i] == 1 && mean(grayscale_flow)[0] < 10.0) {
@@ -240,10 +221,25 @@ if (states[i] > 1) {
 states[i] += 1;
 }
 if (states[i] > 8) {
+Mat processed;
+cvtColor(whiteboard(bounding_boxes[i]), processed, CV_BGR2GRAY);
+threshold(processed, processed, 60, 255, 3);
+// threshold_2 OCR PREPROCESS
+threshold(processed, processed, 150, 255, 0);
+// threshold_1 OCR PREPROCESS
+morphologyEx(processed, processed, MORPH_OPEN, ellipticKernel(20));
+// dilate size OCR PREPROCESS
+if (mean(processed)[0]<250) {
 box = i;
+} else {
+states[i]++;
+if (states[i] > 12) {
+states[i] = 0;
+}
+}
+//box = i;
 }
    }
-printf("\n");
 
    // TODO: write code to figure out when a box has been filled in
    // try to see if the person finished writing something in each bounding box
@@ -264,8 +260,13 @@ printf("\n");
     sprintf(buf, "%d", box);
     string buf_s = string(buf);
     imwrite(identifier+"_"+buf_s+"_bounding.jpg", processed);
-    
-    imshow("HANDWRITING",processed);
+threshold(processed, processed, 70, 255, 3);
+// threshold_2 OCR PREPROCESS
+threshold(processed, processed, 140, 255, 0);
+// threshold_1 OCR PREPROCESS
+morphologyEx(processed, processed, MORPH_OPEN, ellipticKernel(6));
+// dilate size OCR PREPROCESS
+//    imshow("HANDWRITING",processed);
     detecting = false;
     return 0;
    }
