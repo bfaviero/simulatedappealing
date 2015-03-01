@@ -8,6 +8,7 @@ import drawing
 from placeholder import Placeholder
 
 placeholders = ['_' + str(i) for i in range(0, 10)]
+
 print placeholders
 placeholders_in_use = []
 
@@ -19,6 +20,12 @@ def next_placeholder(x=None, y=None, big=True, noexponent=False):
 	placeholders_in_use.append(placeholder)
 	placeholder.draw_square()
 	return placeholder
+
+def return_all_placeholders():
+	while placeholders_in_use:
+		placeholder = placeholders_in_use.pop()
+		placeholders.append(placeholder.string)
+
 
 def return_placeholder(placeholder):
 	placeholders.insert(0, placeholder.string)
@@ -96,18 +103,24 @@ def get_solution(expr):
 def go():
 
 	pygame.draw.rect(drawing.screen, drawing.blue, (0, 0, 600, 400), 2)
-	pygame.draw.rect(drawing.screen, drawing.blue, (500, 500, 100, 100), 0)
-	pygame.draw.rect(drawing.screen, drawing.blue, (600, 600, 100, 100), 0)
+	pygame.draw.rect(drawing.screen, drawing.blue, (250, 250, 50, 50), 0)
+	pygame.draw.rect(drawing.screen, drawing.blue, (300, 300, 50, 50), 0)
 	pygame.display.update()
 
 	expr = "%s" % next_placeholder()
 	should_i_check_yet = 0
-	while should_i_check_yet < 100:
+	while True:
 
 		events = pygame.event.get()
 		for event in events:
-		    if event.type == pygame.K_q:
-		        return.K_RIGHT:
+		    if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+		    	return
+		    if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+		    	pygame.draw.rect(drawing.screen, drawing.black, (0, 0, 1000, 1000), 0)
+		    	pygame.display.update()
+		    	return_all_placeholders()
+		    	expr = "%s" % next_placeholder()
+		    	break
 
 		should_i_check_yet += 1
 		
@@ -115,7 +128,10 @@ def go():
 			get_solution(expr)
 
 		bounding_boxes = [placeholder.get_kiwi_coords() for placeholder in placeholders_in_use]
+
 		box_index , new_val = kiwi.newBox(bounding_boxes)
+		#box_index = int(raw_input('index'))
+		#new_val = raw_input('val ')
 		to_replace = placeholders_in_use[box_index]
 		to_replace.fill()
 		to_replace.fill_with_text(new_val)

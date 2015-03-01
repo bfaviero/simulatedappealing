@@ -8,12 +8,12 @@ white = (255,255,255)
 black = (0,0,0)
 pink = (255,200,200)
 
-SCALE = 3
-SCREEN_SIZE = 400*SCALE
-SMALL_SQUARE = 10*SCALE
-SMALL_FONT = 8*SCALE
-BIG_SQUARE = 20*SCALE
-BIG_FONT = 18*SCALE
+SCALE = 1.5
+SCREEN_SIZE = int(400*SCALE)
+SMALL_SQUARE = int(10*SCALE)
+SMALL_FONT = int(8*SCALE)
+BIG_SQUARE = int(20*SCALE)
+BIG_FONT = int(18*SCALE)
 
 pygame.init()
 small_font = pygame.font.SysFont('Arial', SMALL_FONT)
