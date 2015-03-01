@@ -227,7 +227,7 @@ if (i==1)
 imshow("flow2", grayscale_flow);
 if (i==2)
 imshow("flow3", grayscale_flow);
-if (states[i] == 0 && mean(grayscale_flow)[0]>35.0) {
+if (states[i] == 0 && mean(grayscale_flow)[0]>25.0) {
 states[i] = 1;
 }
 if (states[i] == 1 && mean(grayscale_flow)[0] < 10.0) {

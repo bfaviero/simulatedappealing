@@ -21,6 +21,11 @@ def newBox(bounding = [(0,0,100,100),(100,0,200,100),(200,0,300,100)]):
   time.sleep(0.1)
   for fn in os.listdir(KIWI_DIRECTORY):
    if 'thingy' in fn and 'bounding.jpg' in fn:
-    os.system('rm '+KIWI_DIRECTORY+'/thingy_bounding')
-    os.system('rm '+KIWI_DIRECTORY+'/'+fn)
-    return (int(fn.replace('_bounding.jpg','').split('_')[-1]),classifyImage(KIWI_DIRECTORY + '/' + fn))
+    try:
+     results = classifyImage(KIWI_DIRECTORY + '/' + fn)
+     return (int(fn.replace('_bounding.jpg','').split('_')[-1]),results)
+    except:
+     print 'errooooor'
+    finally:
+     os.system('rm '+KIWI_DIRECTORY+'/thingy_bounding')
+     os.system('rm '+KIWI_DIRECTORY+'/'+fn)
