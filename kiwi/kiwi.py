@@ -19,6 +19,7 @@ def classifyImage(path):
  return [' ','0','1','2','3','4','5','6','7','8','9','x','y','e','A','B','C','D','E','F','G','H','O','J'][int(r.text)]
 
 def newBox(bounding = [(0,0,100,100),(100,0,200,100),(200,0,300,100)]):
+ print bounding
  open(KIWI_DIRECTORY+'/thingy_bounding', 'w').write('\n'.join([' '.join(map(str,x)) for x in bounding]))
  os.system(KIWI_DIRECTORY+'/bin/webcam &')
  while True:
