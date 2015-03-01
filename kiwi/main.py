@@ -30,7 +30,7 @@ def next_placeholder(x=None, y=None, big=True, noexponent=False):
 	else:
 		placeholder = Placeholder(placeholders.pop(0), noexponent=noexponent)
 	placeholders_in_use.append(placeholder)
-	placeholders_in_use =  sorted(placeholders_in_use, key= lambda p: p.x + p.size)
+	placeholders_in_use =  sorted(placeholders_in_use, key= lambda p: -p.x - p.size)
 	placeholder.draw_square()
 	if mode == MODE_CL:
 		placeholder.fill_with_text(str(placeholders_in_use.index(placeholder)))
