@@ -12,9 +12,11 @@ class Placeholder:
 		self.noexponent = noexponent
 
 	def draw_square(self, color=white):
+		return
 		self.draw_square_fn(self.x, self.y, color=color)
 
 	def fill(self):
+		return
 		self.draw_square_fn(self.x, self.y, color=black, width=0)
 
 	def shift_and_redraw(self):
@@ -24,6 +26,7 @@ class Placeholder:
 			self.draw_square()
 
 	def fill_with_text(self, s, nosquare=False):
+		return
 		self.fill()
 		if nosquare:
 			self.draw_square(black)
