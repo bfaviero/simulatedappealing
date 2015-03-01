@@ -134,8 +134,29 @@ int main (int argc, char** argv) {
  while (keep_going) {
 
   string filename = "";
+  string identifier = "";
   while (filename.compare("") == 0) {
-   filename = "bounding";
+   DIR* dir = opendir(".");
+   struct dirent *de;
+   while (dir) {
+    de = readdir(dir);
+    if (!de) break;
+    filename = de->d_name;
+    if (filename.find("_bounding") < filename.length()) {
+     identifier = "";
+     for (int q=0;q<filename.length();q++) {
+      if (filename[q]!='_') {
+       identifier+=filename[q];
+      } else {
+       break;
+      }
+     }
+     break;
+    } else {
+     filename = "";
+    }
+   }
+//   filename = "bounding";
    // TODO: pick filename which contains _bounding
   }
 
@@ -162,10 +183,12 @@ int main (int argc, char** argv) {
   Mat initial_frame(cvQueryFrame(capture));
   Mat initial_whiteboard = webcamToWhiteboard(initial_frame);
   vector<Mat> bounding_box_buffers;
+  vector<Mat> initial_buffers;
   for (int i = 0; i < bounding_boxes.size(); i++) {
    Mat bounding_box_buffer = initial_whiteboard(bounding_boxes[i]);
    Mat other;
    GaussianBlur(bounding_box_buffer, other, Size(5,5), 0, 0);
+   initial_buffers.push_back(other);
    bounding_box_buffers.push_back(other);
   }
 
@@ -224,19 +247,14 @@ printf("\n");
 
    if (box != -1) {
     Mat handwriting = extractBoundingBox(whiteboard, bounding_boxes.at(box));
+
     Mat processed;
     cvtColor(handwriting, processed, CV_BGR2GRAY);
-    threshold(processed, processed, tracker1, 255, THRESH_TOZERO);
-    // TODO: preprocess the handwriting image before passing it to CNN
-    // filter that Mat and morpho to get only strokes
-    // resize it to reduce white
-    // dump the grayscale into a jpeg with box in name
 
-    // TODO: dump image to file
     char buf[100];
     sprintf(buf, "%d", box);
     string buf_s = string(buf);
-    imwrite("output_"+buf_s+".jpg", processed);
+    imwrite("output_"+identifier+"_"+buf_s+".jpg", processed);
     imshow("HANDWRITING",processed);
     detecting = false;
    }
