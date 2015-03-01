@@ -129,9 +129,9 @@ def go():
 
 		bounding_boxes = [placeholder.get_kiwi_coords() for placeholder in placeholders_in_use]
 
-		#box_index , new_val = kiwi.newBox(bounding_boxes)
-		box_index = int(raw_input('index'))
-		new_val = raw_input('val ')
+		box_index , new_val = kiwi.newBox(bounding_boxes)
+		#box_index = int(raw_input('index'))
+		#new_val = raw_input('val ')
 		to_replace = placeholders_in_use[box_index]
 		to_replace.fill()
 		to_replace.fill_with_text(new_val)
