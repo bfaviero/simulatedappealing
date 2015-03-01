@@ -13,13 +13,10 @@ SMALL_FONT = 8
 BIG_SQUARE = 20
 BIG_FONT = 18
 
-screen = None
-
-def init():
-	pygame.init()
-	small_font = pygame.font.SysFont('Arial', SMALL_FONT)
-	big_font = pygame.font.SysFont('Arial', BIG_FONT)
-	screen = pygame.display.set_mode((400, 400))
+pygame.init()
+small_font = pygame.font.SysFont('Arial', SMALL_FONT)
+big_font = pygame.font.SysFont('Arial', BIG_FONT)
+screen = pygame.display.set_mode((400, 400))
 
 def draw_small_square(x, y, color=red):
 	draw_square(x, y, size=SMALL_SQUARE, color=color)
