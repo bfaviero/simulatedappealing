@@ -146,7 +146,7 @@ def go():
 		bounding_boxes = [placeholder.get_kiwi_coords() for placeholder in placeholders_in_use]
 
 		if mode == MODE_BEST:
-			box_index , new_val = kiwi.newBox(bounding_boxes + [input_placeholder])
+			box_index , new_val = kiwi.newBox(bounding_boxes + [INPUT_RECT])
 		elif mode == MODE_CL:
 			box_index = int(raw_input('index: '))
 			new_val = raw_input('val: ')
