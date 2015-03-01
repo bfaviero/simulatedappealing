@@ -168,7 +168,7 @@ def go():
 
 		has_exponent = False
 		if (new_val not in subscript and not to_replace.noexponent):
-			if new_val not in ops:
+			if new_val not in ops and False:
 				(x, y) = to_replace.get_coords_of_next_exponent_square()
 				if not to_replace.big:
 					for p in placeholders_in_use:
@@ -200,6 +200,9 @@ def go():
 		if mode == MODE_CL:
 			for placeholder in placeholders_in_use:
 				placeholder.fill_with_text(str(placeholders_in_use.index(placeholder)))
-
+		try:
+			get_solution(expr)
+		except:
+			pass
 go()
 
