@@ -91,37 +91,31 @@ subscript = ["I", "S"]
 wolfram = Wolfram()
 
 def get_solution(expr):
-	try:
-		y = 60*drawing.SCALE + drawing.BIG_SQUARE * 2
-		drawing.draw_small_label("Finding solution...", 0, y+50)
-		images = wolfram.get_solutions(expr)
-		pygame.draw.rect(drawing.screen, drawing.black, (0, y+50, 1000, 1000), 0)
-		for title, image in images:
-			try:
-				drawing.draw_small_label(title, 0, y+50)
-				y += drawing.SMALL_SQUARE
+	y = 60*drawing.SCALE + drawing.BIG_SQUARE * 2
+	drawing.draw_small_label("Finding solution...", 0, y+50)
+	images = wolfram.get_solutions(expr)
+	pygame.draw.rect(drawing.screen, drawing.black, (0, y+50, 1000, 1000), 0)
+	for title, image in images:
+		drawing.draw_small_label(title, 0, y+50)
+		y += drawing.SMALL_SQUARE
 
-				myimage = pygame.image.load(image)
-				imagerect = myimage.get_rect()
-				imagerect = imagerect.move((0, y+50))
-				size = imagerect.size
-				width = size[0]
-				height = size[1]
-				"""
-				ideal_height = 150
-				scale = ideal_height / float(height)
-				scale = 1
-				size = (int(width * scale), int(height * scale))
-				myimage = pygame.transform.scale(myimage, size)
-				"""
-				myimage = drawing.inverted(myimage)
-				drawing.screen.blit(myimage, imagerect)
-				pygame.display.flip()
-				y += height
-			except:
-				pass
-	except:
-		pass
+		myimage = pygame.image.load(image)
+		imagerect = myimage.get_rect()
+		imagerect = imagerect.move((0, y+50))
+		size = imagerect.size
+		width = size[0]
+		height = size[1]
+		"""
+		ideal_height = 150
+		scale = ideal_height / float(height)
+		scale = 1
+		size = (int(width * scale), int(height * scale))
+		myimage = pygame.transform.scale(myimage, size)
+		"""
+		myimage = drawing.inverted(myimage)
+		drawing.screen.blit(myimage, imagerect)
+		pygame.display.flip()
+		y += height
 
 def reset(expr):
 	pygame.draw.rect(drawing.screen, drawing.black, (0, 0, 1000, 1000), 0)

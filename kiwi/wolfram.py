@@ -62,22 +62,19 @@ class Wolfram():
 		"""
 		images = []
 		for pod in res.pods:
-			try:
-				if pod.title in [
-					"Number line",
-					"Geometric figure",
-					"Properties as a real function"
-					]:
-					continue
-				child = pod.main.node.getchildren()[1]
-				src = child.get('src')
-				width = int(child.get('width'))
-				height = int(child.get('height'))
-				f = StringIO.StringIO()
-				imgRequest = urllib2.Request(src)
-				image = urllib2.urlopen(imgRequest).read()
-				f.write(image)
-				images.append((pod.title, f))
-			except:
-				pass
+			if pod.title in [
+				"Number line",
+				"Geometric figure",
+				"Properties as a real function"
+				]:
+				continue
+			child = pod.main.node.getchildren()[1]
+			src = child.get('src')
+			width = int(child.get('width'))
+			height = int(child.get('height'))
+			f = StringIO.StringIO()
+			imgRequest = urllib2.Request(src)
+			image = urllib2.urlopen(imgRequest).read()
+			f.write(image)
+			images.append((pod.title, f))
 		return images
