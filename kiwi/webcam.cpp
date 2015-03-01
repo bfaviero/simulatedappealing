@@ -254,7 +254,7 @@ printf("\n");
     char buf[100];
     sprintf(buf, "%d", box);
     string buf_s = string(buf);
-    imwrite("output_"+identifier+"_"+buf_s+".jpg", processed);
+    imwrite(identifier+"_"+buf_s+"_bounding.jpg", processed);
     imshow("HANDWRITING",processed);
     detecting = false;
    }
