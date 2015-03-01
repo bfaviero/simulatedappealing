@@ -3,20 +3,22 @@
 
 import os
 import time
+import requests
 
-KIWI_DIRECTORY = '../kiwi/bin/'
+CNN_API_URL = 'http://ec2-54-146-245-15.compute-1.amazonaws.com:8080/'
+KIWI_DIRECTORY = '.'
 # ends with / !!!
 
-os.system(KIWI_DIRECTORY+'webcam &')
+os.system(KIWI_DIRECTORY+'/bin/webcam &')
 
 def classifyImage(path):
- print 'NOT IMPLEMENTED YET! TODO'
- return 0
+ r = requests.post(CNN_API_URL, files={'image.jpg': open(path, 'rb')})
+ return r.text
 
 def newBox(bounding = [(0,0,100,100)]):
  open(KIWI_DIRECTORY+'thingy_bounding', 'w').write('\n'.join([' '.join(x) for x in bounding]))
  while True:
   time.sleep(0.1)
   for fn in os.listdir(KIWI_DIRECTORY):
-   if 'bounding.jpg' in fn:
-    return (int(fn.replace('_bounding.jpg','').split('_')[-1]),classifyImage(KIWI_DIRECTORY + fn))
+   if 'thingy' in fn and 'bounding.jpg' in fn:
+    return (int(fn.replace('_bounding.jpg','').split('_')[-1]),classifyImage(KIWI_DIRECTORY + '/' + fn))
