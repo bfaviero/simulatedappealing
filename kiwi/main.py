@@ -12,6 +12,11 @@ placeholders = ['_' + str(i) for i in range(0, 10)]
 print placeholders
 placeholders_in_use = []
 
+MODE_BEST = 0
+MODE_TOP = 1
+MODE_CL = 2
+mode = MODE_CL
+
 def next_placeholder(x=None, y=None, big=True, noexponent=False):
 	if x:
 		placeholder = Placeholder(placeholders.pop(0), x=x, y=y, big=big, noexponent=noexponent)
@@ -77,7 +82,7 @@ wolfram = Wolfram()
 
 def get_solution(expr):
 	images = wolfram.get_solutions(expr)
-	y = 60*drawing.SCALE + drawing.BIG_SQUARE
+	y = 60*drawing.SCALE + drawing.BIG_SQUARE * 2
 	pygame.draw.rect(drawing.screen, drawing.black, (0, y, 1000, 1000), 0)
 	for title, image in images:
 		try:
@@ -131,9 +136,11 @@ def go():
 
 		bounding_boxes = [placeholder.get_kiwi_coords() for placeholder in placeholders_in_use]
 
-		box_index , new_val = kiwi.newBox(bounding_boxes)
-		#box_index = int(raw_input('index'))
-		#new_val = raw_input('val ')
+		if mode == MODE_BEST:
+			box_index , new_val = kiwi.newBox(bounding_boxes)
+		elif mode == MODE_CL:
+			box_index = int(raw_input('index: '))
+			new_val = raw_input('val: ')
 		to_replace = placeholders_in_use[box_index]
 		to_replace.fill()
 		to_replace.fill_with_text(new_val)
