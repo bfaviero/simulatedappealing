@@ -94,7 +94,7 @@ def go():
 
 	expr = "%s" % next_placeholder()
 	should_i_check_yet = 0
-	while should_i_check_yet < 100
+	while should_i_check_yet < 100:
 		should_i_check_yet += 1
 		
 		if should_i_check_yet %3 == 0:
