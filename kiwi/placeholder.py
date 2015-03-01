@@ -37,5 +37,8 @@ class Placeholder:
 		offset = SMALL_SQUARE if has_exponent else 0
 		return (self.x+self.size+offset, self.y)
 
+	def get_kiwi_coords(self):
+		return (self.x, self.y, self.x+self.size, self.y+self.size)
+
 	def __str__(self):
 		return self.string
