@@ -1,3 +1,4 @@
+
 #include "webcam.hpp"
 
 using namespace cv;
@@ -153,13 +154,11 @@ int main (int argc, char** argv) {
      filename = "";
     }
    }
-   printf("opened %s\n", filename.c_str());
   }
 
   // open and parse filename
   ifstream bounding_file (filename.c_str());
   vector<Rect> bounding_boxes;
-
   while (bounding_file.good()) {
    string line;
    getline(bounding_file, line);
@@ -178,6 +177,10 @@ int main (int argc, char** argv) {
   }
   Mat initial_frame(cvQueryFrame(capture));
   Mat initial_whiteboard = webcamToWhiteboard(initial_frame);
+  Mat yocomo(initial_whiteboard);
+  rectangle(yocomo, bounding_boxes[0], Scalar(0,0,0));
+  rectangle(yocomo, bounding_boxes[1], Scalar(0,0,0));
+  rectangle(yocomo, bounding_boxes[2], Scalar(0,0,0));
   vector<Mat> bounding_box_buffers;
   vector<Mat> initial_buffers;
   for (int i = 0; i < bounding_boxes.size(); i++) {
@@ -197,11 +200,7 @@ int main (int argc, char** argv) {
    Mat image(cvQueryFrame(capture));
    Mat whiteboard = webcamToWhiteboard(image);
 
-   rectangle(whiteboard, bounding_boxes[0], Scalar(0,0,0));
-   rectangle(whiteboard, bounding_boxes[1], Scalar(0,0,0));
-   rectangle(whiteboard, bounding_boxes[2], Scalar(0,0,0));
-
-   imshow("webcam", whiteboard);
+   imshow("webcam", yocomo);
    int box = -1;
 
    for (int i=0; i<bounding_boxes.size(); i++) {
@@ -216,6 +215,15 @@ int main (int argc, char** argv) {
     if (mean(grayscale_flow)[0]<5.0) {
      bounding_box_buffers[i] = bounding_box_buffers[i]*0.5 + blurred*0.5;
     }
+Mat display_demo;
+cvtColor(whiteboard(bounding_boxes[0]), display_demo, CV_BGR2GRAY);
+threshold(display_demo, display_demo, 70, 255, 3);
+// threshold_2 OCR PREPROCESS
+threshold(display_demo, display_demo, 140, 255, 0);
+// threshold_1 OCR PREPROCESS
+morphologyEx(display_demo, display_demo, MORPH_OPEN, ellipticKernel(6));
+// dilate size OCR PREPROCESS
+imshow("example", display_demo);
 if (i==0)
 imshow("flow1", grayscale_flow);
 if (i==1)
@@ -256,6 +264,7 @@ printf("\n");
     sprintf(buf, "%d", box);
     string buf_s = string(buf);
     imwrite(identifier+"_"+buf_s+"_bounding.jpg", processed);
+    
     imshow("HANDWRITING",processed);
     detecting = false;
     return 0;
