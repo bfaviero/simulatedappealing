@@ -102,7 +102,7 @@ def get_solution(expr):
 
 def go():
 
-	pygame.draw.rect(drawing.screen, drawing.blue, (0, 0, 600, 400), 2)
+	pygame.draw.rect(drawing.screen, drawing.blue, (0, 0, 400*drawing.SCALE, 267*drawing.SCALE), 2)
 	pygame.draw.rect(drawing.screen, drawing.blue, (250, 250, 50, 50), 0)
 	pygame.draw.rect(drawing.screen, drawing.blue, (300, 300, 50, 50), 0)
 	pygame.display.update()
