@@ -18,8 +18,7 @@ BIG_FONT = int(18*SCALE)
 pygame.init()
 small_font = pygame.font.SysFont('Arial', SMALL_FONT)
 big_font = pygame.font.SysFont('Arial', BIG_FONT)
-screen = pygame.display.set_mode((SCREEN_SIZE, SCREEN_SIZE))
-pygame.display.toggle_fullscreen()
+screen = pygame.display.set_mode((1280, 720))
 
 def inverted(img):
   inv = pygame.Surface(img.get_rect().size, pygame.SRCALPHA)

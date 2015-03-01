@@ -18,6 +18,7 @@ MODE_CL = 2
 mode = MODE_BEST
 
 INPUT_RECT = (drawing.SMALL_SQUARE, 60*drawing.SCALE + drawing.BIG_SQUARE, drawing.BIG_SQUARE, drawing.BIG_SQUARE)
+INPUT_BOUNDING_BOX = (drawing.SMALL_SQUARE, 60*drawing.SCALE + drawing.BIG_SQUARE, drawing.SMALL_SQUARE + drawing.BIG_SQUARE, 60*drawing.SCALE + drawing.BIG_SQUARE + drawing.BIG_SQUARE)
 input_placeholder = Placeholder('xxx', INPUT_RECT[0], INPUT_RECT[1])
 
 def init():
@@ -146,7 +147,7 @@ def go():
 		bounding_boxes = [placeholder.get_kiwi_coords() for placeholder in placeholders_in_use]
 
 		if mode == MODE_BEST:
-			box_index , new_val = kiwi.newBox(bounding_boxes + [INPUT_RECT])
+			box_index , new_val = kiwi.newBox(bounding_boxes + [INPUT_BOUNDING_BOX])
 		elif mode == MODE_CL:
 			box_index = int(raw_input('index: '))
 			new_val = raw_input('val: ')
