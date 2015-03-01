@@ -26,7 +26,7 @@ class Wolfram():
 
 		print "Searching for solution for equation:"
 		print "\t %s" % expr
-		res = self.client.query("(%s) = 0" % expr)
+		res = self.client.query("(%s) = x" % expr)
 
 		possible_titles = [
 			"Solutions", 
