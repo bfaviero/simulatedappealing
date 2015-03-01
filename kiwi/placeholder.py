@@ -1,7 +1,7 @@
 from drawing import *
 
 class Placeholder:
-	def __init__(self, string, x=0, y=100, big=True, noexponent=False):
+	def __init__(self, string, x=0, y=60*SCALE, big=True, noexponent=False):
 		self.big = big
 		self.size = BIG_SQUARE if big else SMALL_SQUARE
 		self.draw_label_fn = draw_big_label if big else draw_small_label
@@ -24,6 +24,8 @@ class Placeholder:
 			self.draw_square()
 
 	def fill_with_text(self, s):
+		self.fill()
+		self.draw_square()
 		self.draw_label_fn(s, self.x, self.y)
 
 	def get_coords_of_next_exponent_square(self):

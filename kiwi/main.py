@@ -19,6 +19,7 @@ def next_placeholder(x=None, y=None, big=True, noexponent=False):
 		placeholder = Placeholder(placeholders.pop(0), noexponent=noexponent)
 	placeholders_in_use.append(placeholder)
 	placeholder.draw_square()
+	#placeholder.fill_with_text(str(placeholders_in_use.index(placeholder)))
 	return placeholder
 
 def return_all_placeholders():
@@ -76,7 +77,8 @@ wolfram = Wolfram()
 
 def get_solution(expr):
 	images = wolfram.get_solutions(expr)
-	y = 100 + drawing.BIG_SQUARE
+	y = 60*drawing.SCALE + drawing.BIG_SQUARE
+	pygame.draw.rect(drawing.screen, drawing.black, (0, y, 1000, 1000), 0)
 	for title, image in images:
 		try:
 			drawing.draw_small_label(title, 0, y)
@@ -88,11 +90,13 @@ def get_solution(expr):
 			size = imagerect.size
 			width = size[0]
 			height = size[1]
+			"""
 			ideal_height = 150
 			scale = ideal_height / float(height)
 			scale = 1
 			size = (int(width * scale), int(height * scale))
 			myimage = pygame.transform.scale(myimage, size)
+			"""
 			myimage = drawing.inverted(myimage)
 			drawing.screen.blit(myimage, imagerect)
 			pygame.display.flip()
@@ -103,8 +107,6 @@ def get_solution(expr):
 def go():
 
 	pygame.draw.rect(drawing.screen, drawing.blue, (0, 0, 400*drawing.SCALE, 267*drawing.SCALE), 2)
-	pygame.draw.rect(drawing.screen, drawing.blue, (250, 250, 50, 50), 0)
-	pygame.draw.rect(drawing.screen, drawing.blue, (300, 300, 50, 50), 0)
 	pygame.display.update()
 
 	expr = "%s" % next_placeholder()
@@ -167,6 +169,8 @@ def go():
 			next_main_placeholder = next_placeholder(x, y, to_replace.big)
 			expr = expr.replace(to_replace.string, new_val + next_main_placeholder.string)
 		return_placeholder(to_replace)
+		#for placeholder in placeholders_in_use:
+			#placeholder.fill_with_text(str(placeholders_in_use.index(placeholder)))
 
 go()
 
