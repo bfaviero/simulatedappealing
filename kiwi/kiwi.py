@@ -16,7 +16,7 @@ for fn in os.listdir(KIWI_DIRECTORY):
 def classifyImage(path):
  r = requests.post(CNN_API_URL, files={'image.jpg': open(path, 'rb')})
  print 'got '+r.text
- return [' ','0','1','2','3','4','5','6','7','8','9','x','y','e','A','B','C','D','E','F','G','H','O','J'][int(r.text)]
+ return [' ','0','1','2','3','4','5','6','7','8','9','x','y','e','+',')','/','*','I','(','P','-','D','S'][int(r.text)]
 
 def newBox(bounding = [(0,0,100,100),(100,0,200,100),(200,0,300,100)]):
  print bounding
