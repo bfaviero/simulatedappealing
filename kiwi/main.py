@@ -24,7 +24,7 @@ input_placeholder = Placeholder('xxx', INPUT_RECT[0], INPUT_RECT[1])
 def init():
 	input_placeholder.draw_square()
 
-def next_placeholder(x=None, y=None, big=True, noexponent=False):
+def next_placeholder(placeholders_in_use, x=None, y=None, big=True, noexponent=False):
 	if x:
 		placeholder = Placeholder(placeholders.pop(0), x=x, y=y, big=big, noexponent=noexponent)
 	else:
@@ -123,7 +123,7 @@ def reset(expr):
 	pygame.draw.rect(drawing.screen, drawing.black, (0, 0, 1000, 1000), 0)
 	pygame.display.update()
 	return_all_placeholders()
-	expr = "%s" % next_placeholder()
+	expr = "%s" % next_placeholder(placeholders_in_use)
 	init()
 	return expr
 
@@ -132,7 +132,7 @@ def go():
 	pygame.draw.rect(drawing.screen, drawing.blue, (0, 0, 400*drawing.SCALE, 267*drawing.SCALE), 2)
 	pygame.display.update()
 
-	expr = "%s" % next_placeholder()
+	expr = "%s" % next_placeholder(placeholders_in_use)
 
 	while True:
 
@@ -174,27 +174,27 @@ def go():
 					for p in placeholders_in_use:
 						if p.x >= x:
 							p.shift_and_redraw()
-				new_val += "**(%s)" % next_placeholder(x, y, False).string
+				new_val += "**(%s)" % next_placeholder(placeholders_in_use, x, y, False).string
 				has_exponent = True
 
 			(x, y) = to_replace.get_coords_of_next_square(has_exponent)
-			next_main_placeholder = next_placeholder(x, y, to_replace.big)
+			next_main_placeholder = next_placeholder(placeholders_in_use, x, y, to_replace.big)
 			if not to_replace.noexponent:
 				expr = remove_previous_placeholders(expr, to_replace)
 			expr = expr.replace(to_replace.string, new_val + next_main_placeholder.string)
 		elif to_replace.noexponent:
 			(x, y) = to_replace.get_coords_of_next_square(has_exponent)
-			next_main_placeholder = next_placeholder(x, y, to_replace.big, noexponent=True)
+			next_main_placeholder = next_placeholder(placeholders_in_use, x, y, to_replace.big, noexponent=True)
 			expr = expr.replace(to_replace.string, new_val + next_main_placeholder.string)
 		else:
 			(x1, y1) = to_replace.get_coords_of_next_exponent_square()
 			(x2, y2) = to_replace.get_coords_of_next_subponent_square()
 			new_val += "^(%s)V(%s)V" % (
-				next_placeholder(x1, y1, False).string, 
-				next_placeholder(x2, y2, False, noexponent=True).string)
+				next_placeholder(placeholders_in_use, x1, y1, False).string, 
+				next_placeholder(placeholders_in_use, x2, y2, False, noexponent=True).string)
 
 			(x, y) = to_replace.get_coords_of_next_square(has_exponent)
-			next_main_placeholder = next_placeholder(x, y, to_replace.big)
+			next_main_placeholder = next_placeholder(placeholders_in_use, x, y, to_replace.big)
 			expr = expr.replace(to_replace.string, new_val + next_main_placeholder.string)
 		return_placeholder(to_replace)
 		if mode == MODE_CL:
