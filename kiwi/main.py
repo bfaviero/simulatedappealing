@@ -92,17 +92,17 @@ wolfram = Wolfram()
 def get_solution(expr):
 	try:
 		y = 60*drawing.SCALE + drawing.BIG_SQUARE * 2
-		drawing.draw_small_label("Finding solution...", 0, y)
+		drawing.draw_small_label("Finding solution...", 0, y+50)
 		images = wolfram.get_solutions(expr)
-		pygame.draw.rect(drawing.screen, drawing.black, (0, y, 1000, 1000), 0)
+		pygame.draw.rect(drawing.screen, drawing.black, (0, y+50, 1000, 1000), 0)
 		for title, image in images:
 			try:
-				drawing.draw_small_label(title, 0, y)
+				drawing.draw_small_label(title, 0, y+50)
 				y += drawing.SMALL_SQUARE
 
 				myimage = pygame.image.load(image)
 				imagerect = myimage.get_rect()
-				imagerect = imagerect.move((0, y))
+				imagerect = imagerect.move((0, y+50))
 				size = imagerect.size
 				width = size[0]
 				height = size[1]
