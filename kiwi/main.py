@@ -30,6 +30,7 @@ def next_placeholder(x=None, y=None, big=True, noexponent=False):
 	else:
 		placeholder = Placeholder(placeholders.pop(0), noexponent=noexponent)
 	placeholders_in_use.append(placeholder)
+	placeholders_in_use =  sorted(placeholders_in_use, key= lambda p: p.x + p.size)
 	placeholder.draw_square()
 	if mode == MODE_CL:
 		placeholder.fill_with_text(str(placeholders_in_use.index(placeholder)))
@@ -145,7 +146,6 @@ def go():
 
 
 		bounding_boxes = [placeholder.get_kiwi_coords() for placeholder in placeholders_in_use]
-
 		if mode == MODE_BEST:
 			box_index , new_val = kiwi.newBox(bounding_boxes + [INPUT_BOUNDING_BOX])
 		elif mode == MODE_CL:
