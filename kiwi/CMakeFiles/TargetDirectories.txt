@@ -1,1 +1,0 @@
-/home/shariq/rift-mouth-tracker/CMakeFiles/./bin/webcam.dir

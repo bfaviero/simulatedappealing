@@ -1,5 +1,4 @@
 #include "webcam.hpp"
-#include <chrono>
 
 using namespace cv;
 using namespace std;
@@ -10,10 +9,6 @@ Mat ellipticKernel(int width, int height = -1) {
  } else {
   return getStructuringElement(MORPH_ELLIPSE,Size(width,height), Point(width/2, height/2));
  }
-}
-
-unsigned long long getMilliseconds() {
- return chrono::system_clock::now().time_since_epoch()/chrono::milliseconds(1);
 }
 
 float[] whiteboardToImage(float[] whiteboard_point) {
